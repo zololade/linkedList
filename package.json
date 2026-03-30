@@ -1,0 +1,25 @@
+{
+  "name": "recursion",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx ./src/main",
+    "watch": "tsx watch ./src/main",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^25.5.0",
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.4.0",
+    "prettier": "3.8.1",
+    "tsx": "^4.21.0",
+    "typescript-eslint": "^8.57.2",
+    "vitest": "^4.1.1"
+  }
+}
