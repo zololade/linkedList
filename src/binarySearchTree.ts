@@ -67,6 +67,19 @@ class Tree {
 
     return result;
   }
+
+  insert(val: number, root: Node | null = this.root): Node | null {
+    if (this.root === null) {
+      this.root = new Node(val, null, null);
+      return this.root;
+    }
+    if (root === null) return new Node(val, null, null);
+
+    if (val < root.data) root.leftNode = this.insert(val, root.leftNode);
+    else if (val > root.data) root.rightNode = this.insert(val, root.rightNode);
+
+    return root;
+  }
 }
 
 //what does this node do
@@ -80,8 +93,3 @@ const prettyPrint = (node: Node | null, prefix = "", isLeft = true) => {
   console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
   prettyPrint(node.leftNode, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
-
-let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-
-prettyPrint(tree.root);
-console.log(tree.includes(10));
