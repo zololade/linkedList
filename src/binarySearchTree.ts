@@ -80,6 +80,53 @@ class Tree {
 
     return root;
   }
+
+  insertLoop(val: number, root: Node | null = this.root) {
+    if (this.root === null) {
+      this.root = new Node(val, null, null);
+      return;
+    }
+
+    let currNode: Node | null = root;
+
+    while (currNode) {
+      if (val === currNode.data) break;
+      if (val > currNode.data) {
+        if (currNode.rightNode === null) {
+          currNode.rightNode = new Node(val, null, null);
+          break;
+        }
+        currNode = currNode.rightNode;
+      } else if (val < currNode.data) {
+        if (currNode.leftNode === null) {
+          currNode.leftNode = new Node(val, null, null);
+          break;
+        }
+        currNode = currNode.leftNode;
+      }
+    }
+  }
+
+  delete(val: number, root: Node | null = this.root) {
+    if (this.root === null) {
+      return null;
+    }
+
+    //base case, when we reach the end of visible path for val
+    if (root === null) return null;
+
+    if (root.data === val) {
+      if (root.leftNode === null && root.rightNode === null) {
+        return null;
+      } else if (root.leftNode === null || root.rightNode === null) {
+        return root.leftNode || root.rightNode;
+      }
+    }
+
+    if (val < root.data) root.leftNode = this.delete(val, root.leftNode);
+    else if (val > root.data) root.rightNode = this.delete(val, root.rightNode);
+    return root;
+  }
 }
 
 //what does this node do
@@ -93,3 +140,8 @@ const prettyPrint = (node: Node | null, prefix = "", isLeft = true) => {
   console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
   prettyPrint(node.leftNode, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
+
+let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+
+prettyPrint(tree.root);
+console.log(tree.includes(10));
