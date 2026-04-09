@@ -120,12 +120,21 @@ class Tree {
         return null;
       } else if (root.leftNode === null || root.rightNode === null) {
         return root.leftNode || root.rightNode;
+      } else if (root.leftNode && root.rightNode) {
+        let successor = Tree.fdSuccessor(root.rightNode);
+        root.rightNode = this.delete(successor, root.rightNode);
+        root.data = successor;
       }
     }
 
     if (val < root.data) root.leftNode = this.delete(val, root.leftNode);
     else if (val > root.data) root.rightNode = this.delete(val, root.rightNode);
     return root;
+  }
+
+  private static fdSuccessor(root: Node): number {
+    if (root.leftNode === null) return root.data;
+    return Tree.fdSuccessor(root.leftNode);
   }
 }
 
@@ -141,7 +150,9 @@ const prettyPrint = (node: Node | null, prefix = "", isLeft = true) => {
   prettyPrint(node.leftNode, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+// let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 6347, 324]);
+let tree = new Tree([1, 2, 3]);
 
+// prettyPrint(tree.root);
+tree.delete(2);
 prettyPrint(tree.root);
-console.log(tree.includes(10));
