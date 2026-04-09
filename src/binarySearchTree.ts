@@ -136,6 +136,22 @@ class Tree {
     if (root.leftNode === null) return root.data;
     return Tree.fdSuccessor(root.leftNode);
   }
+
+  levelOrderForEach(callback: (data: number) => void) {
+    if (!callback)
+      throw new Error("please provide a callback for this function");
+
+    let queue: (Node | null)[] = [],
+      node = this.root;
+    queue.push(node);
+
+    while (queue.length > 0) {
+      node = queue.shift()!;
+      callback(node.data);
+      if (node.leftNode !== null) queue.push(node.leftNode);
+      if (node.rightNode !== null) queue.push(node.rightNode);
+    }
+  }
 }
 
 //what does this node do
@@ -150,9 +166,10 @@ const prettyPrint = (node: Node | null, prefix = "", isLeft = true) => {
   prettyPrint(node.leftNode, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-// let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 6347, 324]);
-let tree = new Tree([1, 2, 3]);
+let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 6347, 324]);
+// let tree = new Tree([1, 2, 3]);
 
 // prettyPrint(tree.root);
-tree.delete(2);
+// tree.delete(2);
+
 prettyPrint(tree.root);
