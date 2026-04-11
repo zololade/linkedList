@@ -1,17 +1,5 @@
 import { Tree, prettyPrint } from "./binarySearchTree";
 
-/*
-Create a binary search tree from an array of random numbers with each element having a value less than 100. You can create a function that returns an array of random numbers every time you call it if you wish.
-Confirm that the tree is balanced by calling isBalanced().
-Print out all elements in level, pre, post, and in order.
-Unbalance the tree by adding several numbers whose value is more than 100.
-Confirm that the tree is unbalanced by calling isBalanced().
-Balance the tree by calling rebalance().
-Confirm that the tree is balanced by calling isBalanced().
-Print out all elements in level, pre, post, and in order.
-
-*/
-
 function binaryDriver(
   arr: number[] = Array.from(
     { length: 20 },
@@ -19,8 +7,33 @@ function binaryDriver(
   ),
 ) {
   let tree = new Tree(arr);
-  let balanced = tree.isBalanced();
-  prettyPrint(tree.root);
+  if (!tree.isBalanced()) throw new Error("something went wrong");
+  tree.levelOrderForEachRecur(console.log);
+  console.log("\n");
+  tree.preOrderForEach(console.log);
+  console.log("\n");
+  tree.postOrderForEach(console.log);
+  console.log("\n");
+  tree.inOrderForEach(console.log);
+  console.log("\n");
+
+  Array.from(
+    { length: 6 },
+    () => Math.floor(Math.random() * 100) + 100,
+  ).forEach((val) => tree.insert(val));
+
+  if (!tree.isBalanced()) console.log("unbalanced\n");
+
+  tree.rebalance();
+  if (!tree.isBalanced()) throw new Error("something went wrong");
+  tree.levelOrderForEachRecur(console.log);
+  console.log("\n");
+  tree.preOrderForEach(console.log);
+  console.log("\n");
+  tree.postOrderForEach(console.log);
+  console.log("\n");
+  tree.inOrderForEach(console.log);
+  console.log("\n");
 }
 
 binaryDriver();
