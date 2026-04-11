@@ -53,19 +53,38 @@ class Tree {
     return sorted;
   }
 
-  includes(val: number, node: Node | null = this.root): boolean {
+  private find(val: number, node: Node | null = this.root): Node | null {
     if (node === null || node === undefined) {
-      return false;
+      return null;
     }
 
-    if (node.data === val) return true;
+    if (node.data === val) return node;
 
-    let result: boolean =
+    let result: Node | null =
       val < node.data
-        ? this.includes(val, node.leftNode)
-        : this.includes(val, node.rightNode);
+        ? this.find(val, node.leftNode)
+        : this.find(val, node.rightNode);
 
     return result;
+  }
+
+  includes(val: number) {
+    return this.find(val) !== null ? true : false;
+  }
+
+  height(val: number) {
+    let root = this.find(val);
+    if (root === null) return undefined;
+
+    function recurse(node: Node | null, height = 0): number {
+      if (node === null) return -1;
+
+      return Math.max(
+        recurse(node.leftNode, height) + 1,
+        recurse(node.rightNode, height) + 1,
+      );
+    }
+    return recurse(root);
   }
 
   insert(val: number, root: Node | null = this.root): Node | null {
@@ -153,6 +172,30 @@ class Tree {
     }
   }
 
+  levelOrderForEachRecur(callback: (data: number) => void) {
+    if (!callback)
+      throw new Error("please provide a callback for this function");
+
+    let queue: (Node | null)[] = [],
+      root = this.root;
+    queue.push(root);
+
+    function recurse(q: (Node | null)[]) {
+      if (q.length === 0) return;
+      let newQueue: (Node | null)[] = [];
+
+      q.forEach((node) => {
+        if (node) {
+          if (node.leftNode !== null) newQueue.push(node.leftNode);
+          if (node.rightNode !== null) newQueue.push(node.rightNode);
+          callback(node.data);
+        }
+      });
+      recurse(newQueue);
+    }
+    recurse(queue);
+  }
+
   inOrderForEach(callback: (data: number) => void) {
     if (!callback)
       throw new Error("please provide a callback for this function");
@@ -219,5 +262,6 @@ let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 6347, 324]);
 
 prettyPrint(tree.root);
 
-tree.inOrderForEach(console.log);
+console.log(tree.height(5));
+// tree.levelOrderForEachRecur(console.log);
 // tree.postOrderForEach();
