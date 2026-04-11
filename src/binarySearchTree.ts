@@ -72,6 +72,26 @@ class Tree {
     return this.find(val) !== null ? true : false;
   }
 
+  depth(
+    val: number,
+    node: Node | null = this.root,
+    depth: number = 0,
+  ): number | undefined {
+    if (node === null || node === undefined) {
+      return undefined;
+    }
+
+    if (node.data === val) return depth;
+
+    if (val < node.data) {
+      let sum = this.depth(val, node.leftNode, depth);
+      return sum === undefined ? undefined : sum + 1;
+    } else {
+      let sum = this.depth(val, node.rightNode, depth);
+      return sum === undefined ? undefined : sum + 1;
+    }
+  }
+
   height(val: number) {
     let root = this.find(val);
     if (root === null) return undefined;
@@ -262,6 +282,6 @@ let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 6347, 324]);
 
 prettyPrint(tree.root);
 
-console.log(tree.height(5));
+console.log(tree.depth(1));
 // tree.levelOrderForEachRecur(console.log);
 // tree.postOrderForEach();
