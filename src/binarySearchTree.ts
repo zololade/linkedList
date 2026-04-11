@@ -281,11 +281,7 @@ class Tree {
 
     if (leftHeight === undefined || rightHeight === undefined) return true;
 
-    if (
-      leftHeight - rightHeight === 0 ||
-      leftHeight - rightHeight === -1 ||
-      leftHeight - rightHeight === 1
-    ) {
+    if (Math.abs(leftHeight - rightHeight) <= 1) {
       return true;
     } else {
       return false;
