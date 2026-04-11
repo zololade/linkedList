@@ -260,6 +260,43 @@ class Tree {
     }
     recurse(initialNode);
   }
+
+  isBalanced(root: Node | null = this.root): boolean {
+    if (root === undefined || root === null) return true;
+
+    let rootResult = this.isBalHelper(root);
+    let rightResult = this.isBalanced(root.rightNode);
+    let leftResult = this.isBalanced(root.leftNode);
+
+    return rootResult && rightResult && leftResult;
+  }
+
+  private isBalHelper(root: Node | null) {
+    if (root === undefined || root === null) return true;
+
+    let leftHeight =
+      root.leftNode !== null ? this.height(root.leftNode.data) : -1;
+    let rightHeight =
+      root.rightNode !== null ? this.height(root.rightNode.data) : -1;
+
+    if (leftHeight === undefined || rightHeight === undefined) return true;
+
+    if (
+      leftHeight - rightHeight === 0 ||
+      leftHeight - rightHeight === -1 ||
+      leftHeight - rightHeight === 1
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  rebalance() {
+    let newArray: number[] = [];
+    this.inOrderForEach((val) => newArray.push(val));
+    this.root = Tree.buildTree(newArray);
+  }
 }
 
 //what does this node do
@@ -275,13 +312,18 @@ const prettyPrint = (node: Node | null, prefix = "", isLeft = true) => {
 };
 
 let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 6347, 324]);
+
+tree.insert(6348);
+tree.insert(6349);
+tree.insert(6350);
 // let tree = new Tree([1, 2, 3]);
 
 // prettyPrint(tree.root);
 // tree.delete(2);
+tree.rebalance();
 
 prettyPrint(tree.root);
 
-console.log(tree.depth(1));
+console.log(tree.isBalanced());
 // tree.levelOrderForEachRecur(console.log);
 // tree.postOrderForEach();
