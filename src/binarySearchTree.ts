@@ -299,8 +299,6 @@ class Tree {
   }
 }
 
-//what does this node do
-
 const prettyPrint = (node: Node | null, prefix = "", isLeft = true) => {
   if (node === null || node === undefined) {
     return;
@@ -311,19 +309,4 @@ const prettyPrint = (node: Node | null, prefix = "", isLeft = true) => {
   prettyPrint(node.leftNode, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 6347, 324]);
-
-tree.insert(6348);
-tree.insert(6349);
-tree.insert(6350);
-// let tree = new Tree([1, 2, 3]);
-
-// prettyPrint(tree.root);
-// tree.delete(2);
-tree.rebalance();
-
-prettyPrint(tree.root);
-
-console.log(tree.isBalanced());
-// tree.levelOrderForEachRecur(console.log);
-// tree.postOrderForEach();
+export { Tree, prettyPrint };
