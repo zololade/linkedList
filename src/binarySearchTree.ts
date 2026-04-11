@@ -152,6 +152,51 @@ class Tree {
       if (node.rightNode !== null) queue.push(node.rightNode);
     }
   }
+
+  inOrderForEach(callback: (data: number) => void) {
+    if (!callback)
+      throw new Error("please provide a callback for this function");
+    let initialNode = this.root;
+
+    function recurse(root: Node | null) {
+      if (root === null) return;
+
+      recurse(root.leftNode);
+      callback(root.data);
+      recurse(root.rightNode);
+    }
+    recurse(initialNode);
+  }
+
+  preOrderForEach(callback: (data: number) => void) {
+    if (!callback)
+      throw new Error("please provide a callback for this function");
+    let initialNode = this.root;
+
+    function recurse(root: Node | null) {
+      if (root === null) return;
+
+      callback(root.data);
+      recurse(root.leftNode);
+      recurse(root.rightNode);
+    }
+    recurse(initialNode);
+  }
+
+  postOrderForEach(callback: (data: number) => void) {
+    if (!callback)
+      throw new Error("please provide a callback for this function");
+    let initialNode = this.root;
+
+    function recurse(root: Node | null) {
+      if (root === null) return;
+
+      recurse(root.leftNode);
+      recurse(root.rightNode);
+      callback(root.data);
+    }
+    recurse(initialNode);
+  }
 }
 
 //what does this node do
@@ -173,3 +218,6 @@ let tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 6347, 324]);
 // tree.delete(2);
 
 prettyPrint(tree.root);
+
+tree.inOrderForEach(console.log);
+// tree.postOrderForEach();
