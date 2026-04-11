@@ -6,34 +6,62 @@ function binaryDriver(
     () => Math.floor(Math.random() * 100) + 1,
   ),
 ) {
-  let tree = new Tree(arr);
-  if (!tree.isBalanced()) throw new Error("something went wrong");
-  tree.levelOrderForEachRecur(console.log);
-  console.log("\n");
-  tree.preOrderForEach(console.log);
-  console.log("\n");
-  tree.postOrderForEach(console.log);
-  console.log("\n");
-  tree.inOrderForEach(console.log);
-  console.log("\n");
+  const tree = new Tree(arr);
 
-  Array.from(
+  console.log("=== Initial tree ===");
+  prettyPrint(tree.root);
+
+  if (!tree.isBalanced())
+    throw new Error("Tree should be balanced after build");
+
+  const levelVals: number[] = [];
+  const preVals: number[] = [];
+  const postVals: number[] = [];
+  const inVals: number[] = [];
+
+  tree.levelOrderForEach((v) => levelVals.push(v));
+  tree.preOrderForEach((v) => preVals.push(v));
+  tree.postOrderForEach((v) => postVals.push(v));
+  tree.inOrderForEach((v) => inVals.push(v));
+
+  console.log("Level order :", levelVals.join(", "));
+  console.log("Pre-order   :", preVals.join(", "));
+  console.log("Post-order  :", postVals.join(", "));
+  console.log("In-order    :", inVals.join(", "));
+
+  const inserted = Array.from(
     { length: 6 },
     () => Math.floor(Math.random() * 100) + 100,
-  ).forEach((val) => tree.insert(val));
+  );
+  inserted.forEach((v) => tree.insert(v));
+  console.log("\nInserted:", inserted.join(", "));
 
-  if (!tree.isBalanced()) console.log("unbalanced\n");
+  if (!tree.isBalanced()) {
+    console.log("Status: unbalanced");
+    console.log("Rebalancing...");
+    tree.rebalance();
+  }
 
-  tree.rebalance();
-  if (!tree.isBalanced()) throw new Error("something went wrong");
-  tree.levelOrderForEachRecur(console.log);
-  console.log("\n");
-  tree.preOrderForEach(console.log);
-  console.log("\n");
-  tree.postOrderForEach(console.log);
-  console.log("\n");
-  tree.inOrderForEach(console.log);
-  console.log("\n");
+  if (!tree.isBalanced()) throw new Error("Rebalance failed");
+  console.log("Status: balanced\n");
+
+  console.log("=== Rebalanced tree ===");
+  prettyPrint(tree.root);
+
+  const levelVals2: number[] = [];
+  const preVals2: number[] = [];
+  const postVals2: number[] = [];
+  const inVals2: number[] = [];
+
+  tree.levelOrderForEach((v) => levelVals2.push(v));
+  tree.preOrderForEach((v) => preVals2.push(v));
+  tree.postOrderForEach((v) => postVals2.push(v));
+  tree.inOrderForEach((v) => inVals2.push(v));
+
+  console.log("Level order :", levelVals2.join(", "));
+  console.log("Pre-order   :", preVals2.join(", "));
+  console.log("Post-order  :", postVals2.join(", "));
+  console.log("In-order    :", inVals2.join(", "));
 }
 
 binaryDriver();
